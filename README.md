@@ -32,8 +32,8 @@
  
 1. Склонируйте репозиторий:
    ```
-   git clone https://github.com/yuliamil1/afisha-user-loyalty.git
-   cd afisha-user-loyalty 
+   git clone https://github.com/yuliamil1/afisha.git
+   cd afisha
    ```
 2. Создайте и активируйте виртуальное окружение:
    ```
