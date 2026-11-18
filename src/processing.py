@@ -284,6 +284,41 @@ class DataProcessor:
         print(self.orders_df.isna().sum())
 
         return self.orders_df
+    
+    def clean_orders(self):
+        """Исключает заказы с отрицательной выручкой и выбросы
+        выше 99-го перцентиля выручки."""
+
+        if self.orders_df is None:
+            raise ValueError('Сначала необходимо загрузить заказы.')
+
+        orders = self.orders_df.copy()
+        before = len(orders)
+
+        # Исключаем заказы с отрицательной выручкой.
+        negative_count = int((orders['revenue_rub'] < 0).sum())
+        orders = orders[orders['revenue_rub'] >= 0].copy()
+
+        # Граница 99-го перцентиля выручки.
+        p99_revenue = orders['revenue_rub'].quantile(0.99)
+
+        # Исключаем заказы выше 99-го перцентиля.
+        orders = orders[
+            orders['revenue_rub'] <= p99_revenue
+        ].copy()
+
+        after = len(orders)
+
+        print('\nОчистка заказов:')
+        print(f'Заказов до очистки: {before}')
+        print(f'Заказов с отрицательной выручкой: {negative_count}')
+        print(f'99-й перцентиль выручки: {p99_revenue:.2f}')
+        print(f'Заказов после очистки: {after}')
+        print(f'Удалено заказов: {before - after}')
+
+        self.orders_df = orders
+
+        return self.orders_df
 
     # ---------------------------------------------------------
     # 5. ФОРМИРОВАНИЕ ПРОФИЛЕЙ ПОЛЬЗОВАТЕЛЕЙ
