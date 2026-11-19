@@ -739,16 +739,21 @@ class DataProcessor:
             labels=["1 заказ", "2-4 заказа", "5 и более заказов"],
         ).astype(str)
 
+        profiles["first_weekday"] = profiles["first_order_dt"].dt.dayofweek.astype(str)
+
         phik_columns = [
             "first_region",
             "first_device",
             "first_event_type",
+            "first_weekday",
+            "avg_revenue_rub",
             "total_orders",
             "orders_segment",
         ]
 
         phik_matrix = phik.phik_matrix(
-            profiles[phik_columns], interval_cols=["total_orders"]
+            profiles[phik_columns], 
+            interval_cols=["total_orders", "avg_revenue_rub"]
         )
 
         phik_result = (
