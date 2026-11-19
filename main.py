@@ -105,8 +105,11 @@ def main():
         ].to_string(index=False)
     )
 
-    print('\nКорреляционная матрица:')
-    print(correlation_results.to_string())
+    print('\nКорреляция Пирсона:')
+    print(correlation_results['pearson'].to_string())
+
+    print('\nКоэффициент φk (связь с числом и сегментом заказов):')
+    print (correlation_results['phik'].to_string())
 
     print('\n' + '=' * 60)
     print('ОБРАБОТКА И АНАЛИЗ ДАННЫХ ЗАВЕРШЕНЫ')
