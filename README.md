@@ -11,21 +11,25 @@
 - проверены пропуски и дубликаты, оптимизированы типы данных;
 - выручка в тенге переведена в рубли по курсу на дату заказа; 
 - результат сохранён в столбце revenue_rub;
+- очищены заказы: удалены заказы с отрицательной выручкой и выше 99-го перцентиля выручки;
 - сформированы профили пользователей;
 - проведены исследовательский анализ и анализ сегментов;
 - проверены статистические гипотезы;
 - изучены связи между признаками с помощью коэффициента φk (phik).
  
-**Стек:** Python, pandas, numpy, matplotlib, seaborn, scipy, phik, SQLAlchemy.
+**Стек:** Python, pandas, numpy, matplotlib, seaborn, scipy, phik, SQLAlchemy, statsmodels.
  
 ## Структура проекта
  
 ```
-├── data/               # данные
-├── notebooks/          # ноутбуки с анализом
-├── src/                # скрипты обработки и анализа
-├── requirements.txt    # список библиотек
-└── README.md           # описание проекта
+├── data/            # данные
+├── src/             # скрипты обработки и анализа
+│ ├── processing.py  # обработка и анализ
+│ └── reporter.py    # отчет по датафреймам 
+├── main.py          # точка входа
+├── .env.example     # шаблон переменных для подключения
+├── requirements.txt # список библиотек
+└── README.md        # описание проекта
 ```
  
 ## Запуск проекта
@@ -43,10 +47,14 @@
    ```
    pip install -r requirements.txt
    ```
-4. Запустите анализ:
-   ```
-   jupyter notebook
-   ```
+4. Подготовьте два файла с данными и положите их в папку 'data/':
+- 'data/orders.csv' - заказы пользователей: выгрузка из базы 'data-analyst-afisha' SQL-запросом, сохраненная в CSV. Столбцы: 'user_id', 'device_type_canonical', 'order_id',	'order_dt',	'order_ts', 'currency_code',	'revenue',	'tickets_count',	'days_since_prev',	'event_id',	'event_type_main',	'service_name',	'region_name',	'city_name'.
+-'data/final_tickets_tenge_df.csv' - курсы валют(тенге к рублю). Столбцы: 'data', 'nominal', 'curs', 'cdx'.
+5. Параметры подключения к базе нужны только для самой выгрузки данных. Для этого скопируйте '.env.example' в '.env' и заполните 'DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD'.
+6. Запустите приложение:
+```
+python main.py
+```
  
 ## Итоги анализа
  

@@ -28,15 +28,16 @@ def main():
     )
 
     # 3. Предобработка и конвертация валют
-    print('\n3. ПРЕДОБРАБОТКА И КОНВЕРТАЦИЯ ВАЛЮТ')
+    print('\n3. ПРЕДОБРАБОТКА И КОНВЕРТАЦИЯ ВАЛЮТ И ОЧИСТКА ЗАКАЗОВ')
     processor.convert_currency()
     processor.preprocess_data()
+    processor.clean_orders()
 
     # 4. Отчёт после предобработки
     print('\n4. ОТЧЁТ ПО ОБРАБОТАННЫМ ДАННЫМ')
     reporter.show_report(
         processor.orders_df,
-        title='Заказы после предобработки'
+        title='Заказы после предобработки и очистки'
     )
 
     # 5. Формирование профилей пользователей
@@ -104,8 +105,11 @@ def main():
         ].to_string(index=False)
     )
 
-    print('\nКорреляционная матрица:')
-    print(correlation_results.to_string())
+    print('\nКорреляция Пирсона:')
+    print(correlation_results['pearson'].to_string())
+
+    print('\nКоэффициент φk (связь с числом и сегментом заказов):')
+    print (correlation_results['phik'].to_string())
 
     print('\n' + '=' * 60)
     print('ОБРАБОТКА И АНАЛИЗ ДАННЫХ ЗАВЕРШЕНЫ')
